@@ -1,0 +1,4 @@
+## SMART HOUSING INFORMATION SYSTEM
+
+### Spec
+1. ORM: Sequelize

@@ -5,8 +5,7 @@
     "database": "DB_SHIS_DEV",
     "host": "127.0.0.1",
     "port": "5432",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "test": {
     "username": "admin",
@@ -14,8 +13,7 @@
     "database": "DB_SHIS_TEST",
     "host": "127.0.0.1",
     "port": "5432",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   },
   "production": {
     "username": "admin",
@@ -23,7 +21,6 @@
     "database": "DB_SHIS_PROD",
     "host": "127.0.0.1",
     "port": "5432",
-    "dialect": "postgres",
-    "operatorsAliases": false
+    "dialect": "postgres"
   }
 }

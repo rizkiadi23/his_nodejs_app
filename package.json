@@ -8,7 +8,9 @@
     "dev": "nodemon index.js",
     "test": "jest",
     "init-migration": "node node_modules/sequelize-cli/lib/sequelize init",
-    "migrate": "node node_modules/sequelize-cli/lib/sequelize db:migrate"
+    "migrate": "node node_modules/sequelize-cli/lib/sequelize db:migrate",
+    "undo-migration": "node node_modules/sequelize-cli/lib/sequelize db:migrate:undo",
+    "clean-migrate": "node node_modules/sequelize-cli/lib/sequelize db:migrate:undo && node node_modules/sequelize-cli/lib/sequelize db:migrate"
   },
   "author": "rizkiadi23",
   "license": "ISC",
@@ -21,7 +23,8 @@
     "pg": "^7.11.0",
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.8.12",
-    "sequelize-cli": "^5.5.0"
+    "sequelize-cli": "^5.5.0",
+    "uuidv4": "^4.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

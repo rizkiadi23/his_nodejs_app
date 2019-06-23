@@ -4,6 +4,7 @@
     "password": "admin123",
     "database": "DB_SHIS_DEV",
     "host": "127.0.0.1",
+    "port": "5432",
     "dialect": "postgres",
     "operatorsAliases": false
   },
@@ -12,6 +13,7 @@
     "password": "admin123",
     "database": "DB_SHIS_TEST",
     "host": "127.0.0.1",
+    "port": "5432",
     "dialect": "postgres",
     "operatorsAliases": false
   },
@@ -20,6 +22,7 @@
     "password": "admin123",
     "database": "DB_SHIS_PROD",
     "host": "127.0.0.1",
+    "port": "5432",
     "dialect": "postgres",
     "operatorsAliases": false
   }

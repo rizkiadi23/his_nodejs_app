@@ -7,15 +7,6 @@ const db = require('./models')
 // Load Configurations
 dotenv.config();
 
-// DB Connection
-db.authenticate()
-.then(() => {
-  console.log('Connection has been establised successfully')
-})
-.catch(err => {
-  console.log('Unable to connect to the database: ', err)
-})
-
 // Register Middleware
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

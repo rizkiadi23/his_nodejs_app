@@ -1,5 +1,5 @@
 {
-  "name": "smart_housing_information_system",
+  "name": "housing_information_system",
   "version": "1.0.0",
   "description": "Web app for housing information system",
   "main": "index.js",

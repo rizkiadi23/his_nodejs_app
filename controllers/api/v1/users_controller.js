@@ -1,15 +1,17 @@
 const users_controller = require('express').Router()
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const validation = require('../../../validations/user_validation')
 const {
   User
 } = require('../../../models')
+const verifyToken = require('../../../middlewares/token_verificaton')
 
 /**
  * @params 
  * get all users in the system
  */
-users_controller.get('/all', async (req, res) => {
+users_controller.get('/all', verifyToken, async (req, res) => {
   let users = await User.findAll({
     attributes: {
       exclude: ['password']
@@ -30,7 +32,7 @@ users_controller.get('/all', async (req, res) => {
  * @params user_id
  * endpoint to get user details by id
  */
-users_controller.get('/:id', async (req, res) => {
+users_controller.get('/:id', verifyToken, async (req, res) => {
   let user = await User.findAll({
     attributes: {
       exclude: ['password']
@@ -51,6 +53,34 @@ users_controller.get('/:id', async (req, res) => {
       data: user[0]
     })
   }
+})
+
+/**
+ * @params id
+ * endpoint to update user
+ */
+users_controller.patch('/:id/edit', verifyToken, async (req, res) => {
+  const updated_user = await User.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  })
+
+  updated_user[0] > 0 ? res.json({success: true, message: 'user updated'}) : res.status(500).json({success: false, message: 'Internal Server Error'})
+})
+
+/**
+ * @params id
+ * endpoint to delete new user
+ */
+users_controller.delete('/:id/delete', verifyToken, async (req, res) => {
+  const deleted_user = await User.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+
+  deleted_user == 1 ? res.json({success:true, message: 'user deleted'}) : res.json({success:false, message: 'user no longer exists'})
 })
 
 /**
@@ -91,31 +121,31 @@ users_controller.post('/register', async (req, res) => {
 })
 
 /**
- * @params id
- * endpoint to update user
+ * @params email and password
+ * endpoint to login
  */
-users_controller.patch('/:id/edit', async (req, res) => {
-  const updated_user = await User.update(req.body, {
-    where: {
-      id: req.params.id
+users_controller.post('/login', async (req, res) => {
+  const user = {
+    email: req.body.email,
+    password: req.body.password
+  }
+
+  let registered_user = await User.findAll({ where: { email: req.body.email }})
+  if (!registered_user.length) return res.status(404).json({success: false, message: 'User not found'})
+
+  bcrypt.compare(req.body.password, registered_user[0].password, (err, isMatch) => {
+    if (err) return res.status(500).json({success: false, message: 'Internal Server Error'})
+
+    if (isMatch) {
+      jwt.sign({user: user}, 'secretkey', { expiresIn: '10s' }, (err, token) => {
+        res.json({
+          success: true,
+          message: 'User successfully logged in',
+          token: token
+        })
+      })
     }
   })
-
-  updated_user[0] > 0 ? res.json({success: true, message: 'user updated'}) : res.status(500).json({success: false, message: 'Internal Server Error'})
-})
-
-/**
- * @params id
- * endpoint to delete new user
- */
-users_controller.delete('/:id/delete', async (req, res) => {
-  const deleted_user = await User.destroy({
-    where: {
-      id: req.params.id
-    }
-  })
-
-  deleted_user == 1 ? res.json({success:true, message: 'user deleted'}) : res.json({success:false, message: 'user no longer exists'})
 })
 
 module.exports = users_controller

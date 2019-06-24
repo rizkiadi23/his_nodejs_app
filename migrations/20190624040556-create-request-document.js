@@ -11,7 +11,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       metadata: {
-        type: Sequelize.JSON
+        type: Sequelize.JSONB
       },
       requesterName: {
         type: Sequelize.STRING

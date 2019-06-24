@@ -126,8 +126,7 @@ users_controller.post('/register', async (req, res) => {
  */
 users_controller.post('/login', async (req, res) => {
   const user = {
-    email: req.body.email,
-    password: req.body.password
+    email: req.body.email
   }
 
   let registered_user = await User.findAll({ where: { email: req.body.email }})
@@ -137,7 +136,7 @@ users_controller.post('/login', async (req, res) => {
     if (err) return res.status(500).json({success: false, message: 'Internal Server Error'})
 
     if (isMatch) {
-      jwt.sign({user: user}, 'secretkey', { expiresIn: '10s' }, (err, token) => {
+      jwt.sign(user, 'secretkey', { expiresIn: '1h' }, (err, token) => {
         res.json({
           success: true,
           message: 'User successfully logged in',

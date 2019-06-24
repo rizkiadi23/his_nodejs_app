@@ -4,6 +4,7 @@
   "description": "Web app for housing information system",
   "main": "index.js",
   "scripts": {
+    "development": "concurrently \"nodemon index.js\" \"cd client && npm run serve\" ",
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest",

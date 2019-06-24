@@ -49,12 +49,10 @@ requestDocuments_controller.get('/:id', async (req, res) => {
  * endpoint for creating new document request
  */
 requestDocuments_controller.post('/create', async (req, res) => {
-  const requester = "usertest"
-
   const new_req_payloads = {
     documentType: req.body.documentType,
     metadata: req.body.metadata,
-    requesterName: requester,
+    requesterName: req.body.requesterName,
   }
 
   try {

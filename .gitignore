@@ -20,6 +20,10 @@ client/*.njsproj
 client/*.sln
 client/*.sw?
 
+# backups
+client/backups
+
+## EXPRESS SERVER IGNORE
 node_modules
 .env
 .vscode

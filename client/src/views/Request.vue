@@ -1,30 +1,21 @@
 <template>
   <div class="request">
-    <h1 class="subheading grey--text">Request Documents</h1>
+    <h1 class="subheading grey--text">My Request Documents</h1>
 
     <v-container class="my-5">
-      <v-card flat v-for="request in requests" :key="request.id">
-        <v-layout row wrap :class="`pa-3 request ${request.status.toLowerCase()}`">
-          <v-flex xs12 md6>
-            <div class="caption grey--text">Document Type</div>
-            <div>{{request.documentType}}</div>
-          </v-flex>
-          <v-flex xs6 sm4 md2>
-            <div class="caption grey--text">Requester Name</div>
-            <div>{{request.requesterName}}</div>
-          </v-flex>
-          <v-flex xs6 sm4 md2>
-            <div class="caption grey--text">Approver</div>
-            <div>{{request.approvedBy}}</div>
-          </v-flex>
-          <v-flex xs6 sm4 md2>
-            <div class="right">
-              <v-chip small :class="`${request.status.toLowerCase()} white--text caption my-2`">{{ request.status }}</v-chip>
-            </div>
-          </v-flex>
-        </v-layout>
-        <v-divider></v-divider>
-      </v-card>
+      
+      <v-expansion-panel>
+        <v-expansion-panel-content v-for="myRequest in myRequests" :key="myRequest.id">
+          <div slot="header">{{myRequest.documentType}}</div>
+          <v-card>
+            <v-card-text class="px-4 grey--text">
+              <div class="font-weight-bold">raised at {{myRequest.createdAt}}</div>
+              {{myRequest.status}}
+            </v-card-text>
+          </v-card>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+
     </v-container>
   </div>
 </template>
@@ -33,10 +24,16 @@
 import RequestDocumentService from '../services/RequestDocumentService'
 
 export default {
-  name: 'Request',
   data() {
     return {
       requests: []
+    }
+  },
+  computed: {
+    myRequests() {
+      return this.requests.filter(req => {
+        return req.requesterName === 'Pak Eko'
+      })
     }
   },
   async created() {
@@ -50,22 +47,4 @@ export default {
 </script>
 
 <style>
-  .request.completed {
-    border-left: 4px solid #3cd1c2;
-  }
-  .request.open {
-    border-left: 4px solid orange;
-  }
-  .request.overdue {
-    border-left: 4px solid tomato;
-  }
-  .v-chip.completed {
-    background: #3cd1c2;
-  }
-  .v-chip.open {
-    background: #ffaa2c;
-  }
-  .v-chip.overdue {
-    background: #f83e70;
-  }
 </style>

@@ -1,7 +1,7 @@
 const ping_controller = require('express').Router()
 
 ping_controller.get('/', (req, res) => {
-  res.sendFile(__dirname + 'public/index.html')
+  return res.sendFile('index.html', { root: __dirname + '/../public/' })
 })
 
 module.exports = ping_controller

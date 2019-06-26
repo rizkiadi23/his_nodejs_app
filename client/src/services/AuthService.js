@@ -48,8 +48,20 @@ export function getUserId() {
   return token.id;
 }
 
+export function getAvatar() {
+  const token = decodeToken();
+  if (!token) {
+    return null;
+  }
+  return token.avatar;
+}
+
 export function registerUser(user) {
   return http().post('/api/v1/user/register', user);
+}
+
+export function retrieveAllUsers() {
+  return http().get('/api/v1/user/all')
 }
 
 function decodeToken() {

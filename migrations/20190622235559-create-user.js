@@ -23,6 +23,10 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: "GUEST"
       },
+      avatar: {
+        type: Sequelize.STRING,
+        defaultValue: '/avatar-1.png'
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

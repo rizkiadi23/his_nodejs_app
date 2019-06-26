@@ -1,8 +1,13 @@
 <template>
   <nav>
-    <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+    <v-snackbar v-model="snackbar_success" :timeout="4000" top color="success">
       <span>Awesome! You added a new document request.</span>
-      <v-btn flat color="white" @click="snackbar = false">Close</v-btn>
+      <v-btn flat color="white" @click="snackbar_success = false">Close</v-btn>
+    </v-snackbar>
+
+    <v-snackbar v-model="snackbar_error" :timeout="4000" top color="danger">
+      <span>Upss... Something Went Wrong :( Please Contact Your Admin</span>
+      <v-btn flat color="white" @click="snackbar_error = false">Close</v-btn>
     </v-snackbar>
 
     <v-toolbar flat app>
@@ -52,14 +57,17 @@
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
-            <img src="https://github.com/iamshaunjp/vuetify-playlist/blob/lesson-20/todo-ninja/public/avatar-3.png?raw=true">
+            <img :src="this.$store.state.avatar">
           </v-avatar>
-          <p class="white--text subheading mt-1">
-            Test User One
-          </p>
         </v-flex>
+        <p class="white--text subheading mt-1">
+          {{ this.$store.state.email }}
+        </p>
         <v-flex class="mt-1 mb-3">
-          <Popup @requestAdded="snackbar = true" />
+          <Popup 
+            @requestAdded="snackbar_success = true"
+            @requestError="snackbar_error = true" 
+          />
         </v-flex>
       </v-layout>
       <v-list>
@@ -89,10 +97,11 @@ export default {
       drawer: false,
       links: [
         { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
-        { icon: 'folder', text: 'Request', route: '/request' },
+        { icon: 'folder', text: 'My Request', route: '/request' },
         { icon: 'person', text: 'User', route: '/user' },
       ],
-      snackbar: false
+      snackbar_success: false,
+      snackbar_error: false
     }
   },
   methods: {

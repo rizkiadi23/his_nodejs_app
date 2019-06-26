@@ -32,7 +32,7 @@ export default {
   computed: {
     myRequests() {
       return this.requests.filter(req => {
-        return req.requesterName === 'Pak Eko'
+        return req.metadata.requesterId === this.$store.state.userId
       })
     }
   },

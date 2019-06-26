@@ -17,9 +17,11 @@ export default new Vuex.Store({
       if (state.isLoggedIn) {
         state.email = auth.getEmail()
         state.userId = auth.getUserId()
+        state.avatar = auth.getAvatar()
       } else {
         state.userId = null
         state.email = null
+        state.avatar = null
       }
     }
   },

@@ -80,7 +80,7 @@ export default {
   .request.open {
     border-left: 4px solid orange;
   }
-  .request.overdue {
+  .request.rejected {
     border-left: 4px solid tomato;
   }
   .v-chip.completed {
@@ -89,7 +89,7 @@ export default {
   .v-chip.open {
     background: #ffaa2c;
   }
-  .v-chip.overdue {
+  .v-chip.rejected {
     background: #f83e70;
   }
 </style>

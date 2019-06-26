@@ -11,7 +11,7 @@
     "init-migration": "node node_modules/sequelize-cli/lib/sequelize init",
     "migrate": "node node_modules/sequelize-cli/lib/sequelize db:migrate",
     "undo-migration": "node node_modules/sequelize-cli/lib/sequelize db:migrate:undo",
-    "clean-migrate": "node node_modules/sequelize-cli/lib/sequelize db:migrate:undo && node node_modules/sequelize-cli/lib/sequelize db:migrate",
+    "clean-migrate": "node node_modules/sequelize-cli/lib/sequelize db:migrate:undo:all && node node_modules/sequelize-cli/lib/sequelize db:migrate",
     "prepare-frontend": "cd client && npm run build && cd ../client"
   },
   "author": "rizkiadi23",

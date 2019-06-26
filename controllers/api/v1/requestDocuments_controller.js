@@ -2,12 +2,13 @@ const requestDocuments_controller = require('express').Router()
 const {
   RequestDocument
 } = require('../../../models')
+const verifyToken = require('../../../middlewares/token_verificaton')
 
 /**
  * @params 
  * endpoint for admin to list all document requests
  */
-requestDocuments_controller.get('/all', async (req, res) => {
+requestDocuments_controller.get('/all', verifyToken, async (req, res) => {
   let users = await RequestDocument.findAll()
 
   try {
@@ -48,7 +49,7 @@ requestDocuments_controller.get('/:id', async (req, res) => {
  * @params documentType and metadata
  * endpoint for creating new document request
  */
-requestDocuments_controller.post('/create', async (req, res) => {
+requestDocuments_controller.post('/create', verifyToken, async (req, res) => {
   const new_req_payloads = {
     documentType: req.body.documentType,
     metadata: req.body.metadata,

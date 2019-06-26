@@ -31,15 +31,20 @@
 </template>
 
 <script>
+import { retrieveAllUsers } from '../services/AuthService'
+
 export default {
   data() {
     return {
-      users: [
-        { firstName: 'Test', lastName: 'User One', email: 'testuser1@gmail.com', profile: 'Admin', avatar: 'https://github.com/iamshaunjp/vuetify-playlist/blob/lesson-20/todo-ninja/public/avatar-5.png?raw=true'},
-        { firstName: 'Test', lastName: 'User Two', email: 'testuser2@gmail.com', profile: 'Member', avatar: 'https://github.com/iamshaunjp/vuetify-playlist/blob/lesson-20/todo-ninja/public/avatar-2.png?raw=true'},
-        { firstName: 'Test', lastName: 'User Three', email: 'testuser3@gmail.com', profile: 'Admin', avatar: 'https://github.com/iamshaunjp/vuetify-playlist/blob/lesson-20/todo-ninja/public/avatar-3.png?raw=true'},
-        { firstName: 'Test', lastName: 'User Four', email: 'testuser4@gmail.com', profile: 'Admin', avatar: 'https://github.com/iamshaunjp/vuetify-playlist/blob/lesson-20/todo-ninja/public/avatar-4.png?raw=true'}
-      ]
+      users: []
+    }
+  },
+  async created() {
+    try {
+      let alluser = await retrieveAllUsers()
+      this.users = alluser.data.data
+    } catch (err) {
+      this.error = err
     }
   }
 }

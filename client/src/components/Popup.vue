@@ -7,15 +7,15 @@
       </v-card-title>
       <v-card-text>
         <v-form class="px-3" ref="form">
-          <v-text-field label="Document Type" v-model="documentType" prepend-icon="folder" :rules="inputRules"></v-text-field>
+          <v-text-field label="Document Type" v-model="documentType" prepend-icon="folder"></v-text-field>
 
           <v-menu>
-            <v-text-field :value="formattedDate" slot="activator" label="Due date" prepend-icon="date_range" :rules="inputRules"></v-text-field>
+            <v-text-field :value="formattedDate" slot="activator" label="Due date" prepend-icon="date_range"></v-text-field>
             <v-date-picker v-model="metadata.dueDate"></v-date-picker>
           </v-menu>
 
-          <v-textarea label="Information" v-model="metadata.content" prepend-icon="edit" :rules="inputRules"></v-textarea>
-          <v-btn flat class="success mx-0 mt-3" @click="submit" :loading="loading">Add Request</v-btn>
+          <v-textarea label="Information" v-model="metadata.content" prepend-icon="edit"></v-textarea>
+          <v-btn flat class="success mx-0 mt-3" @click.prevent="submit" :loading="loading">Add Request</v-btn>
         </v-form>
       </v-card-text>
     </v-card>
@@ -24,6 +24,7 @@
 
 <script>
 import format from 'date-fns/format'
+import RequestDocumentService from '../services/RequestDocumentService'
 
 export default {
   data() {
@@ -31,11 +32,9 @@ export default {
       documentType: '',
       metadata: {
         content: '',
-        dueDate: null
+        dueDate: null,
+        requesterId: ''
       },
-      inputRules: [
-        v => v.length >= 3 || 'Minimum length is 3 characters'
-      ],
       loading: false,
       dialog: false
     }
@@ -45,15 +44,36 @@ export default {
       if(this.$refs.form.validate()) {
         this.loading = true
 
-        // Submit to backend to be stored in database
-        confirm('Are You Sure?')
-        setTimeout(() => {
+        const data = {
+          documentType : this.documentType,
+          metadata : {
+            content: this.metadata.content,
+            dueDate: this.metadata.dueDate,
+            requesterId: this.$store.state.userId
+          },
+          requesterName: this.$store.state.email
+        }
+
+        RequestDocumentService.createRequestDocument(data)
+        .then(res => {
+          this.loading = false
+          if (res.status == 200) {
+            this.dialog = false
+            this.$emit('requestAdded')
+            this.clearForm()
+          }
+        })
+        .catch(() => {
+          this.$emit('requestError')
           this.loading = false
           this.dialog = false
-          this.$emit('requestAdded')
-        }, 3000)
-        
+        })
       }
+    },
+    clearForm() {
+      this.documentType = ''
+      this.metadata.content = ''
+      this.metadata.dueDate = null
     }
   },
   computed: {

@@ -125,18 +125,15 @@ users_controller.post('/register', async (req, res) => {
  * endpoint to login
  */
 users_controller.post('/login', async (req, res) => {
-  const user = {
-    email: req.body.email
-  }
-
   let registered_user = await User.findAll({ where: { email: req.body.email }})
   if (!registered_user.length) return res.status(404).json({success: false, message: 'User not found'})
 
   bcrypt.compare(req.body.password, registered_user[0].password, (err, isMatch) => {
     if (err) return res.status(500).json({success: false, message: 'Internal Server Error'})
-
     if (isMatch) {
-      jwt.sign(user, 'secretkey', { expiresIn: '1h' }, (err, token) => {
+      jwt.sign({ 
+        email: registered_user[0].email, id: registered_user[0].id 
+      }, 'secretkey', { expiresIn: '1h' }, (err, token) => {
         res.json({
           success: true,
           message: 'User successfully logged in',

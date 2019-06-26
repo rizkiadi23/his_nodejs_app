@@ -1,7 +1,12 @@
 <template>
   <nav>
+    <v-snackbar v-model="snackbar" :timeout="4000" top color="success">
+      <span>Awesome! You added a new document request.</span>
+      <v-btn flat color="white" @click="snackbar = false">Close</v-btn>
+    </v-snackbar>
+
     <v-toolbar flat app>
-      <v-toolbar-side-icon class="grey--text" @click="drawer = !drawer"></v-toolbar-side-icon>
+      <v-toolbar-side-icon class="grey--text" @click="drawer = !drawer" v-if="$store.state.isLoggedIn"></v-toolbar-side-icon>
       <v-toolbar-title class="text-uppercase grey--text">
         <span class="font-weight-light">Housing </span>
         <span>Information System</span>
@@ -9,7 +14,7 @@
       <v-spacer right></v-spacer>
 
       <!-- Dropdown Menu -->
-      <v-menu offset-y>
+      <v-menu offset-y v-if="$store.state.isLoggedIn">
         <v-btn flat slot="activator" color="grey">
           <v-icon>expand_more</v-icon>
           <span>Menu</span>
@@ -23,13 +28,27 @@
         </v-list>
       </v-menu>
 
-      <v-btn flat color="grey">
+      <v-btn flat color="grey" router :to="'/home'" v-if="!$store.state.isLoggedIn">
+        <span>Home</span>
+      </v-btn>
+
+      <v-btn flat color="grey" @click="logout" v-if="$store.state.isLoggedIn">
         <span>Sign Out</span>
         <v-icon right>exit_to_app</v-icon>
       </v-btn>
+
+      <v-btn flat color="grey" router :to="'/login'" v-if="!$store.state.isLoggedIn">
+        <span>Login</span>
+        <v-icon right>exit_to_app</v-icon>
+      </v-btn>
+
+      <v-btn flat color="grey" router :to="'/register'" v-if="!$store.state.isLoggedIn">
+        <span>Register</span>
+        <v-icon right>person_add</v-icon>
+      </v-btn>
     </v-toolbar>
 
-    <v-navigation-drawer v-model="drawer" app class="primary">
+    <v-navigation-drawer v-model="drawer" app class="primary" v-if="$store.state.isLoggedIn">
       <v-layout column align-center>
         <v-flex class="mt-5">
           <v-avatar size="100">
@@ -40,7 +59,7 @@
           </p>
         </v-flex>
         <v-flex class="mt-1 mb-3">
-          <Popup />
+          <Popup @requestAdded="snackbar = true" />
         </v-flex>
       </v-layout>
       <v-list>
@@ -60,6 +79,7 @@
 </template>
 
 <script>
+import * as auth from '../services/AuthService'
 import Popup from './Popup'
 
 export default {
@@ -68,10 +88,17 @@ export default {
     return {
       drawer: false,
       links: [
-        { icon: 'dashboard', text: 'Dashboard', route: '/' },
+        { icon: 'dashboard', text: 'Dashboard', route: '/dashboard' },
         { icon: 'folder', text: 'Request', route: '/request' },
         { icon: 'person', text: 'User', route: '/user' },
-      ]
+      ],
+      snackbar: false
+    }
+  },
+  methods: {
+    logout() {
+      auth.logout()
+      this.$router.push({ name: 'home' })
     }
   }
 }

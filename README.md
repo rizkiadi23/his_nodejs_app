@@ -22,7 +22,7 @@ Developed using PEVN (Postgres, Express, Vue & Node) Stacks. Structure influence
 
 ## C. USEFUL CLI
 
-#### Backend Installation
+#### Quick Installation
 0. Install `concurrently` as the task runner
 ```sh
 $ npm install -g concurrently
@@ -38,6 +38,11 @@ $ npm run migrate
 3. Start The Server on Dev Mode
 ```
 $ npm run development
+```
+4. Login to System using or create your own account
+```sh
+email: test@user.com
+password: test123
 ```
 
 #### Frontend Installation
